@@ -11,7 +11,7 @@ const Menu = () => {
 	const toggleIsMenuClose = () => {
 		setTimeout(() => {
 			setIsMenuOpen(!isMenuOpen);
-		}, 3000);
+		}, 1000);
 	};
 
 	return (

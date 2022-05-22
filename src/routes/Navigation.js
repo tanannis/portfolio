@@ -19,10 +19,7 @@ const Navigation = () => {
           <ALogo className="logo"/>
         </Link>
 
-        <div className="nav-links-container">
-
-          <Menu/>
-            
+        <div className="nav-links-container">        
           <Link className="nav-link" to="/about">
             About
           </Link>
@@ -30,6 +27,8 @@ const Navigation = () => {
           <Link className="nav-link" to="/contact">
             Contact
           </Link>
+
+          <Menu/>
         </div>
         {isMenuOpen && <MenuDropdown/>}
 
