@@ -1,10 +1,15 @@
-import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { Outlet, Link } from "react-router-dom";
 
 import { ReactComponent as ALogo } from "../assets/annis-logo.svg";
+import Menu from "../components/Menu";
+import MenuDropdown from "../components/MenuDropdown";
+import { MenuContext } from "../context/MenuContext";
+
 import "../styles/Navigation.scss"
 
-
 const Navigation = () => {
+  const { isMenuOpen } = useContext(MenuContext);
 
   return (
     <>
@@ -15,9 +20,8 @@ const Navigation = () => {
         </Link>
 
         <div className="nav-links-container">
-          <Link className="nav-link" to="/portfolio">
-            Portfolio
-          </Link>
+
+          <Menu/>
             
           <Link className="nav-link" to="/about">
             About
@@ -27,7 +31,11 @@ const Navigation = () => {
             Contact
           </Link>
         </div>
+        {isMenuOpen && <MenuDropdown/>}
+
       </div>
+
+      <Outlet />
     </>
   )
 }
