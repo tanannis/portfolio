@@ -18,7 +18,7 @@ const Navigation = () => {
           {/* When user clicks Logo, it links to the home page. */}
           <ALogo className="logo"/>
         </Link>
-
+        
         <div className="nav-links-container">        
           <Link className="nav-link" to="/about">
             About

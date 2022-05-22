@@ -1,17 +1,31 @@
-.Home {
-  text-align: center;
+.home {
+  // text-align: center;
+   min-height: 100vh;
+  width: 100% !important;
+  overflow-x: hidden !important;
+
+
+  .home-header {
+    display: flex;
+        flex-direction: column;
+        text-align: center;
+        font-size: 5vw;
+        text-transform: lowercase;
+        font-weight: bold;
+        letter-spacing: .15em;
+  }
+  
 }
 
 
-.home-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-}
+
+
+
+
+
+
+
+
 
 
 

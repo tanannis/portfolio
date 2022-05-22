@@ -3,8 +3,8 @@
 
 const Home = () => {
   return (
-    <div >
-      HOME HOME HOM HOMEE HOME HOME
+    <div className="home">
+     <div className="home-header"> ANNIS TAN - not how good you are, but how good you want to be !</div>
     </div>
   );
 }
