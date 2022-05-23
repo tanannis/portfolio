@@ -1,115 +1,105 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import emailjs from "emailjs-com";
+
+const SERVICE_ID = "service_z937rev";
+const TEMPLATE_ID = "template_8yed0s4";
+const USER_ID = "fC7VXxXT0ldNW2TYj";
+
+const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
 
 const ContactForm = () => {
+  const [isReadyToSubmit, setIsReadyToSubmit] = useState(false);
 	const [values, setValues] = useState({
-		firstName: "",
-		lastName: "",
+		name: "",
 		email: "",
 		message: "",
 	});
 
-	const [isSubmitted, setIsSubmitted] = useState(false);
-
-	const inputFirstName = (e) => {
-		setValues((values) => ({ ...values, firstName: e.target.value }));
-	};
-
-	const inputLastName = (e) => {
-		setValues((values) => ({ ...values, lastName: e.target.value }));
+	const inputName = (e) => {
+		setValues((values) => ({ ...values, name: e.target.value }));
+		validateValues();
 	};
 
 	const inputEmail = (e) => {
 		setValues((values) => ({ ...values, email: e.target.value }));
+		validateValues();
 	};
 
 	const inputMessage = (e) => {
 		setValues((values) => ({ ...values, message: e.target.value }));
+		validateValues();
 	};
 
-	const submitMessage = (e) => {
-    e.preventDefault();
-		// set submitted status to true
-		setIsSubmitted(!isSubmitted);
-		//post message trueannis@gmail.com
-	};
+  const validateValues = () => {
+    if (values.email && !values.email.match(emailRegex)) return false;
 
-  /* reset form after 5 secs, same as using "componentDidUpdate" 
-    https://stackoverflow.com/questions/50409039/make-a-message-disappear-after-sometime-in-react
-  */
-  useEffect(() => {
-    if (isSubmitted) {
-      setTimeout(() => {
-        setValues({
-          firstName: "",
-          lastName: "",
-          email: "",
-          message: "",
-        })
-        setIsSubmitted(false);
-      }, 5000)
+    if (values.name && values.email && values.message) {
+      setIsReadyToSubmit(true);
+      return true;
     }
-  })
+    return false;
+  };
 
+	const handleSubmitMessage = (e) => {
+		e.preventDefault();
+		emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, e.target, USER_ID).then(
+			(result) => {
+				console.log(result.text);
+				alert("email sent successfully");
+
+				//clears the form after sending the email
+				setValues({
+					name: "",
+					email: "",
+					message: "",
+				});
+				setIsReadyToSubmit(false);
+			},
+			(error) => {
+				alert("error sending email");
+			}
+		);
+	};
 
 	return (
 		<div>
-			<form className="form-container" onSubmit={submitMessage}>
-				{isSubmitted ? <div className="success-message">Your message is submitted!</div> : "" } 
-        <input
-					className="form-field"
-					id="first-name"
-					type="text"
-					placeholder="First Name"
-					name="firstName"
-					value={values.firstName}
-					onChange={inputFirstName}
-				/>
-				<span className="firstName-error-message">
-					Please enter your first name
-				</span>
-
-				<br />
+      Contact Me
+			<form className="form-container" onSubmit={handleSubmitMessage}>
 				<input
 					className="form-field"
-					id="last-name"
+					id="name"
 					type="text"
-					placeholder="Last Name"
-					name="lastName"
-					value={values.lastName}
-					onChange={inputLastName}
+					placeholder="Name..."
+					name="userName"
+					value={values.name}
+					onChange={inputName}
 				/>
-				<span className="lastName-error-message">
-					Please enter your last name
-				</span>
-
 				<br />
 				<input
 					className="form-field"
 					id="email"
 					type="text"
-					placeholder="Your Email"
-					name="email"
+					placeholder="Email..."
+					name="userEmail"
 					value={values.email}
 					onChange={inputEmail}
 				/>
-				<span className="email-error-message">Please enter your email</span>
-
 				<br />
 				<textarea
 					className="form-field"
 					id="message"
 					type="text"
-					placeholder="Your Message"
-					name="message"
+					placeholder="Message..."
+					name="userMessage"
 					value={values.message}
 					onChange={inputMessage}
 				/>
-				<span className="noMessage-error-message">
-					Please enter your message
-				</span>
-
 				<br />
-				<button className="form-field" type="submit" >
+				<button
+					className="form-field"
+					type="submit"
+					disabled={!isReadyToSubmit}
+				>
 					Submit
 				</button>
 			</form>
